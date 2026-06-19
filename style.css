@@ -1,71 +1,144 @@
-/* ─────────────────────────────────────────
+/* ═══════════════════════════════════════════════════════════════
    style.css  —  Portfolio stylesheet
-   ───────────────────────────────────────── */
+   ═══════════════════════════════════════════════════════════════
+   QUICK REFERENCE — where to find things:
+     Colours & fonts .............. :root (line ~10)
+     Navigation bar ............... NAV section
+     Scrolling ticker ............. TICKER section
+     Hero (name, bio, stats) ...... HERO section
+     About & contact box .......... ABOUT section
+     Work experience timeline ..... EXPERIENCE section
+     Project cards ................ PROJECTS section
+     Skill pill groups ............ SKILLS section
+     Education cards .............. EDUCATION section
+     Currently Developing cards ... DEVELOPING section
+     Footer ....................... FOOTER section
+     Fade-in animations ........... SCROLL ANIMATIONS section
+     Mobile / responsive .......... RESPONSIVE section
+   ═══════════════════════════════════════════════════════════════ */
 
-/* TOKENS */
+
+/* ══════════════════════════════════════════
+   DESIGN TOKENS  (change these to retheme)
+   ══════════════════════════════════════════
+   These CSS variables are used everywhere below.
+   Changing one value here updates every element that uses it.
+
+   COLOURS:
+   --bg        Main page background (deep navy-black)
+   --bg2       Slightly lighter background (cards, panels)
+   --bg3       Slightly lighter again (hover states)
+   --border    Visible border colour (boxes, dividers)
+   --border2   Subtle/faint border colour
+   --text      Primary text (headings, values)
+   --muted     Secondary text (body copy, labels)
+   --amber     Accent colour 1 — used for highlights, active states
+   --amber2    Lighter amber — used on hover
+   --teal      Accent colour 2 — used for company names, tags, values
+   --red       Not heavily used; available for error/negative states
+   --white     Near-white for the largest headings
+
+   FONTS:
+   --ff-display  Heading font (Space Grotesk)
+   --ff-mono     Monospace font for labels, tags, code (JetBrains Mono)
+   --ff-body     Body text font (Inter)
+   To swap fonts: update the Google Fonts <link> in index.html
+   and change the variable values here.
+
+   LAYOUT:
+   --nav-h      Height of the fixed top nav bar
+   --ticker-h   Height of the scrolling ticker below the nav
+   These are used in calc() to offset the hero section correctly.
+   ══════════════════════════════════════════ */
 :root {
-  --bg:        #020B18;
-  --bg2:       #071424;
-  --bg3:       #0D2137;
-  --border:    #1A3A5C;
-  --border2:   #0F2840;
-  --text:      #D8E8F4;
-  --muted:     #6A8CAA;
-  --amber:     #FFB800;
-  --amber2:    #FFCA4A;
-  --teal:      #00D4AA;
-  --red:       #FF6B6B;
-  --white:     #F0F8FF;
+  --bg:         #020B18;
+  --bg2:        #071424;
+  --bg3:        #0D2137;
+  --border:     #1A3A5C;
+  --border2:    #0F2840;
+  --text:       #D8E8F4;
+  --muted:      #6A8CAA;
+  --amber:      #FFB800;   /* ← Primary accent — change this to retheme */
+  --amber2:     #FFCA4A;
+  --teal:       #00D4AA;   /* ← Secondary accent */
+  --red:        #FF6B6B;
+  --white:      #F0F8FF;
   --ff-display: 'Space Grotesk', sans-serif;
   --ff-mono:    'JetBrains Mono', monospace;
   --ff-body:    'Inter', sans-serif;
-  --nav-h:     56px;
-  --ticker-h:  32px;
+  --nav-h:      56px;
+  --ticker-h:   32px;
 }
 
-/* RESET */
+
+/* ══════════════════════════════════════════
+   RESET & BASE
+   ══════════════════════════════════════════
+   Removes browser default margins/padding and sets base styles.
+   You shouldn't need to edit this section.
+   ══════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--ff-body);
-  font-size: 16px;
+  font-size: 16px;          /* ← Base font size — everything else is relative to this */
   line-height: 1.6;
   overflow-x: hidden;
 }
 a { color: inherit; text-decoration: none; }
 ul { list-style: none; }
 
+/* Thin custom scrollbar (Chrome/Edge/Safari) */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-/* ── NAV ── */
+
+/* ══════════════════════════════════════════
+   NAV — fixed top navigation bar
+   ══════════════════════════════════════════
+   To change nav height: update --nav-h in :root above.
+   To change logo style: edit .nav-logo
+   To change link style: edit .nav-link and .nav-link:hover
+   The mobile hamburger button (.nav-mobile-toggle) is hidden
+   on desktop and shown on screens < 768px (see RESPONSIVE).
+   ══════════════════════════════════════════ */
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(2,11,24,0.93); backdrop-filter: blur(12px);
+  background: rgba(2,11,24,0.93); /* semi-transparent so page shows through */
+  backdrop-filter: blur(12px);    /* frosted glass effect */
   border-bottom: 1px solid var(--border2);
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  padding: 0 clamp(1.5rem, 5vw, 4rem); /* responsive horizontal padding */
   height: var(--nav-h);
 }
 .nav-logo {
   font-family: var(--ff-mono); font-weight: 700; font-size: 1.1rem;
   color: var(--amber); letter-spacing: 0.05em;
 }
-.nav-links { display: flex; gap: 2rem; }
+.nav-links { display: flex; gap: 2rem; }  /* ← Increase gap to space links further apart */
 .nav-link {
   font-family: var(--ff-mono); font-size: 0.75rem; color: var(--muted);
   letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s;
 }
 .nav-link:hover { color: var(--amber); }
 .nav-mobile-toggle {
-  display: none; background: none; border: none;
+  display: none; /* hidden on desktop, shown in RESPONSIVE section below */
+  background: none; border: none;
   color: var(--amber); font-size: 1.3rem; cursor: pointer; padding: 0.4rem;
 }
 
-/* ── TICKER ── */
+
+/* ══════════════════════════════════════════
+   TICKER — scrolling skill bar below nav
+   ══════════════════════════════════════════
+   The scroll speed is controlled by the animation duration.
+   To slow down: increase 40s. To speed up: decrease it.
+   To pause on hover: .ticker-track:hover is already set.
+   Content is set in data.js → TICKER_ITEMS array.
+   ══════════════════════════════════════════ */
 .ticker-wrap {
   position: fixed; top: var(--nav-h); left: 0; right: 0; z-index: 99;
   background: var(--bg3); border-bottom: 1px solid var(--border);
@@ -74,57 +147,78 @@ nav {
 }
 .ticker-track {
   display: flex; white-space: nowrap;
-  animation: ticker 40s linear infinite;
+  animation: ticker 40s linear infinite; /* ← Change 40s to control speed */
 }
 .ticker-track:hover { animation-play-state: paused; }
 .ticker-item {
   display: inline-flex; align-items: center; gap: 0.4rem;
   padding: 0 1.5rem; font-family: var(--ff-mono); font-size: 0.7rem; color: var(--muted);
 }
-.ticker-item .val { color: var(--teal); font-weight: 700; }
-.ticker-item .up  { color: var(--teal); }
-.ticker-sep { color: var(--border); margin: 0 0.3rem; }
+.ticker-item .val { color: var(--teal); font-weight: 700; } /* the value after the label */
+.ticker-item .up  { color: var(--teal); }                   /* the ▲ arrow */
+.ticker-sep { color: var(--border); margin: 0 0.3rem; }     /* the | separators */
 
 @keyframes ticker {
   0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  100% { transform: translateX(-50%); } /* moves by 50% because content is duplicated */
 }
 
-/* ── HERO ── */
+
+/* ══════════════════════════════════════════
+   HERO — the full-screen opening section
+   ══════════════════════════════════════════
+   The top padding uses calc() to push content below the fixed
+   nav + ticker. If you change --nav-h or --ticker-h, the
+   spacing adjusts automatically.
+   Layout is a two-column grid: text left, stats panel right.
+   On mobile it collapses to one column (see RESPONSIVE).
+   ══════════════════════════════════════════ */
 .hero {
   min-height: 100vh;
+  /* push content below fixed nav (56px) + ticker (32px) + extra breathing room (60px) */
   padding: calc(var(--nav-h) + var(--ticker-h) + 60px) clamp(1.5rem, 6vw, 5rem) 80px;
-  display: grid; grid-template-columns: 1fr auto;
+  display: grid; grid-template-columns: 1fr auto; /* text | stats panel */
   align-items: center; gap: 3rem;
   border-bottom: 1px solid var(--border2);
 }
+
+/* Small amber line + label above the name */
 .hero-eyebrow {
   font-family: var(--ff-mono); font-size: 0.72rem; color: var(--amber);
   letter-spacing: 0.18em; text-transform: uppercase;
   margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem;
 }
 .hero-eyebrow::before {
-  content: ''; display: block; width: 24px; height: 1px; background: var(--amber);
+  content: ''; display: block;
+  width: 24px; height: 1px; background: var(--amber); /* the short amber line */
 }
+
+/* Large name heading */
 .hero-name {
   font-family: var(--ff-display);
-  font-size: clamp(2.8rem, 7vw, 6.5rem);
+  font-size: clamp(2.8rem, 7vw, 6.5rem); /* scales between 2.8rem and 6.5rem */
   font-weight: 700; line-height: 1.0; color: var(--white); letter-spacing: -0.02em;
 }
-.hero-name span { color: var(--amber); }
+.hero-name span { color: var(--amber); } /* makes "Khuzwayo" amber */
+
+/* "ML Engineer · AI Engineer · Data Scientist" line */
 .hero-title {
   margin-top: 1.2rem; font-family: var(--ff-mono);
   font-size: clamp(0.82rem, 1.8vw, 1rem); color: var(--muted); letter-spacing: 0.06em;
 }
-.hero-title span { color: var(--teal); font-weight: 600; }
+.hero-title span { color: var(--teal); font-weight: 600; } /* makes wrapped words teal */
+
+/* Short bio paragraph */
 .hero-bio {
-  margin-top: 1.8rem; max-width: 540px;
+  margin-top: 1.8rem; max-width: 540px; /* ← Adjust max-width to control line length */
   font-size: 0.95rem; color: var(--muted); line-height: 1.75;
 }
+
+/* "What I'm looking for" highlighted box */
 .hero-seeking {
   margin-top: 1.5rem; max-width: 540px;
   padding: 1rem 1.2rem;
-  background: rgba(255,184,0,0.05);
+  background: rgba(255,184,0,0.05); /* very faint amber background */
   border-left: 2px solid var(--amber);
   font-size: 0.85rem; color: var(--text); line-height: 1.7;
 }
@@ -133,8 +227,11 @@ nav {
   letter-spacing: 0.12em; display: block; margin-bottom: 0.4rem;
   text-transform: uppercase;
 }
+
+/* Row of CTA buttons */
 .hero-ctas { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; }
 
+/* Solid amber button (primary) */
 .btn-primary {
   padding: 0.7rem 1.6rem; background: var(--amber); color: var(--bg);
   font-family: var(--ff-mono); font-size: 0.78rem; font-weight: 700;
@@ -144,6 +241,7 @@ nav {
 }
 .btn-primary:hover { background: var(--amber2); transform: translateY(-1px); }
 
+/* Outlined amber button (secondary) */
 .btn-outline {
   padding: 0.7rem 1.6rem; background: transparent; color: var(--amber);
   font-family: var(--ff-mono); font-size: 0.78rem; font-weight: 700;
@@ -153,14 +251,23 @@ nav {
 }
 .btn-outline:hover { background: var(--amber); color: var(--bg); }
 
-/* ── STAT PANEL ── */
+
+/* ══════════════════════════════════════════
+   STAT PANEL — the numbers box in the hero
+   ══════════════════════════════════════════
+   .stat-panel::before creates the "PORTFOLIO STATS" amber label
+   that sits on top of the box border.
+   Each row is a flex container: label on the left, value on the right.
+   Value colour classes: .amber | .white | .teal (default)
+   ══════════════════════════════════════════ */
 .stat-panel {
   background: var(--bg2); border: 1px solid var(--border);
   padding: 2rem 1.8rem; min-width: 240px; position: relative;
-  transition-delay: var(--delay, 0s);
+  transition-delay: var(--delay, 0s); /* used for staggered fade-in */
 }
+/* "PORTFOLIO STATS" label tab sitting on the top border */
 .stat-panel::before {
-  content: 'PORTFOLIO STATS';
+  content: 'PORTFOLIO STATS';      /* ← Change the panel title here */
   position: absolute; top: -1px; left: 1.2rem;
   font-family: var(--ff-mono); font-size: 0.62rem; letter-spacing: 0.16em;
   color: var(--bg); background: var(--amber); padding: 0 0.5rem; line-height: 1.8;
@@ -174,14 +281,22 @@ nav {
   font-family: var(--ff-mono); font-size: 0.68rem;
   color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase;
 }
+/* Default stat value colour is teal; override with .amber or .white class */
 .stat-val { font-family: var(--ff-mono); font-size: 1rem; font-weight: 700; color: var(--teal); }
 .stat-val.amber { color: var(--amber); }
 .stat-val.white { color: var(--white); }
 .stat-val.teal  { color: var(--teal); }
 
-/* ── SECTIONS ── */
+
+/* ══════════════════════════════════════════
+   SECTION SHELL — shared by all sections
+   ══════════════════════════════════════════
+   All <section> elements share this padding.
+   To change section spacing: edit padding here.
+   .section-header is the "01 · TITLE ────" row at the top of each section.
+   ══════════════════════════════════════════ */
 section {
-  padding: 90px clamp(1.5rem, 6vw, 5rem);
+  padding: 90px clamp(1.5rem, 6vw, 5rem); /* ← 90px top/bottom, responsive horizontal */
   border-bottom: 1px solid var(--border2);
 }
 .section-header {
@@ -195,12 +310,21 @@ section {
   font-family: var(--ff-display); font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 700; color: var(--white); letter-spacing: -0.02em;
 }
-.section-line { flex: 1; height: 1px; background: var(--border); }
+.section-line { flex: 1; height: 1px; background: var(--border); } /* horizontal rule */
 
-/* ── ABOUT ── */
+
+/* ══════════════════════════════════════════
+   ABOUT — two-column layout: bio | contact
+   ══════════════════════════════════════════
+   Collapses to one column on screens < 900px (see RESPONSIVE).
+   ══════════════════════════════════════════ */
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+
+/* Left column: bio paragraphs */
 .about-text p { font-size: 0.95rem; color: var(--muted); line-height: 1.8; margin-bottom: 1rem; }
 .about-text strong { color: var(--text); font-weight: 500; }
+
+/* Right column: contact details box */
 .about-contact { background: var(--bg2); border: 1px solid var(--border); padding: 2rem; }
 .contact-label {
   font-family: var(--ff-mono); font-size: 0.62rem;
@@ -213,44 +337,64 @@ section {
 }
 .contact-item:last-child { border-bottom: none; }
 .contact-item .ci-label {
-  color: var(--muted); min-width: 72px; font-size: 0.66rem;
-  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--muted); min-width: 72px; /* ← Increase if your labels are longer */
+  font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.1em;
 }
 .contact-item a:hover { color: var(--amber); }
 
-/* ── EXPERIENCE ── */
+
+/* ══════════════════════════════════════════
+   EXPERIENCE — vertical timeline
+   ══════════════════════════════════════════
+   Each .exp-item is a two-column grid: date (170px) | content.
+   .exp-item::before is the vertical amber line running down the timeline.
+   .exp-dot is the amber circle sitting on the line.
+   On mobile both are hidden (see RESPONSIVE).
+   ══════════════════════════════════════════ */
 .exp-list { display: flex; flex-direction: column; }
 .exp-item {
-  display: grid; grid-template-columns: 170px 1fr;
+  display: grid; grid-template-columns: 170px 1fr; /* ← date column width */
   gap: 0 2.5rem; padding: 2rem 0;
   border-bottom: 1px solid var(--border2); position: relative;
 }
+/* Vertical timeline line — positioned at the right edge of the date column */
 .exp-item::before {
   content: ''; position: absolute;
-  left: 168px; top: 0; bottom: 0; width: 1px; background: var(--border);
+  left: 168px; top: 0; bottom: 0; /* ← keep in sync with grid-template-columns */
+  width: 1px; background: var(--border);
 }
 .exp-item:last-child { border-bottom: none; }
+
+/* Left column: year + date range */
 .exp-date { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--muted); padding-top: 0.2rem; line-height: 1.5; }
-.exp-date .yr { color: var(--amber); font-size: 0.8rem; font-weight: 600; }
+.exp-date .yr { color: var(--amber); font-size: 0.8rem; font-weight: 600; } /* bold amber year */
+
+/* Amber circle on the timeline */
 .exp-dot {
-  position: absolute; left: 162px; top: 2.35rem;
+  position: absolute; left: 162px; top: 2.35rem; /* ← adjust left to match the line */
   width: 13px; height: 13px;
   border: 2px solid var(--amber); background: var(--bg); border-radius: 50%;
 }
-.exp-role { font-family: var(--ff-display); font-size: 1.1rem; font-weight: 600; color: var(--white); margin-bottom: 0.2rem; }
+
+/* Right column: role, company, bullets */
+.exp-role  { font-family: var(--ff-display); font-size: 1.1rem; font-weight: 600; color: var(--white); margin-bottom: 0.2rem; }
 .exp-company { font-family: var(--ff-mono); font-size: 0.78rem; color: var(--teal); margin-bottom: 0.9rem; letter-spacing: 0.06em; }
 .exp-bullets { display: flex; flex-direction: column; gap: 0.45rem; }
 .exp-bullets li {
   font-size: 0.9rem; color: var(--muted);
   padding-left: 1rem; position: relative; line-height: 1.65;
 }
-.exp-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--amber); }
-.exp-bullets li strong { color: var(--text); font-weight: 500; }
+.exp-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--amber); } /* amber bullet */
+.exp-bullets li strong { color: var(--text); font-weight: 500; } /* bold text inside bullets */
+
+/* Amber sub-heading within an experience entry (e.g. "Semantic NLP Pipeline") */
 .exp-sub-label {
   font-family: var(--ff-mono); font-size: 0.65rem;
   color: var(--amber); letter-spacing: 0.12em; text-transform: uppercase;
   margin: 0.9rem 0 0.45rem;
 }
+
+/* Course/topic pill tags (used in LLM Zoomcamp entry) */
 .course-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
 .course-pill {
   font-family: var(--ff-mono); font-size: 0.62rem; color: var(--amber);
@@ -258,30 +402,54 @@ section {
   padding: 0.2rem 0.55rem; letter-spacing: 0.06em;
 }
 
-/* ── PROJECTS ── */
+
+/* ══════════════════════════════════════════
+   PROJECTS — card grid
+   ══════════════════════════════════════════
+   Uses CSS Grid with auto-fill columns. Each card is at least 340px
+   wide; more columns appear as the screen gets wider.
+   The 1.5px gap + background trick creates the "divided grid" look
+   (the border2 background shows through the gaps between cards).
+   ══════════════════════════════════════════ */
 .proj-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 1.5px; background: var(--border2); border: 1px solid var(--border2);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); /* ← min card width */
+  gap: 1.5px;                    /* ← gap between cards; the background shows as a border */
+  background: var(--border2);    /* shows through the gaps to create dividers */
+  border: 1px solid var(--border2);
 }
 .proj-card { background: var(--bg2); padding: 2rem; transition: background 0.2s; }
-.proj-card:hover { background: var(--bg3); }
-.proj-num { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--border); letter-spacing: 0.12em; margin-bottom: 0.9rem; }
+.proj-card:hover { background: var(--bg3); } /* subtle hover background lift */
+
+.proj-num   { font-family: var(--ff-mono); font-size: 0.65rem; color: var(--border); letter-spacing: 0.12em; margin-bottom: 0.9rem; }
 .proj-title { font-family: var(--ff-display); font-size: 1.05rem; font-weight: 600; color: var(--white); margin-bottom: 0.8rem; line-height: 1.3; }
-.proj-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.2rem; }
+.proj-desc  { font-size: 0.85rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.2rem; }
+
 .proj-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
 .proj-tag {
   font-family: var(--ff-mono); font-size: 0.62rem; color: var(--teal);
   background: rgba(0,212,170,0.08); border: 1px solid rgba(0,212,170,0.2);
   padding: 0.2rem 0.55rem; letter-spacing: 0.08em;
 }
+
+/* GitHub link at the bottom of a project card */
 .proj-link { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--amber); letter-spacing: 0.08em; transition: color 0.2s; }
 .proj-link:hover { color: var(--amber2); }
-.proj-link::after { content: ' →'; }
+.proj-link::after { content: ' →'; } /* arrow appended via CSS so you don't need it in the HTML */
 
-/* ── SKILLS ── */
+
+/* ══════════════════════════════════════════
+   SKILLS — pill groups grid
+   ══════════════════════════════════════════
+   Same "gap as border" trick as projects.
+   Each group has a label + a row of pill chips.
+   Hover on a pill changes its colour to teal.
+   ══════════════════════════════════════════ */
 .skills-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1px; background: var(--border2); border: 1px solid var(--border2);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* ← min group width */
+  gap: 1px;
+  background: var(--border2); border: 1px solid var(--border2);
 }
 .skill-group { background: var(--bg2); padding: 1.8rem 2rem; }
 .skill-group-label {
@@ -297,40 +465,62 @@ section {
 }
 .skill-pill:hover { border-color: var(--teal); color: var(--teal); }
 
-/* ── EDUCATION ── */
+
+/* ══════════════════════════════════════════
+   EDUCATION — two cards side by side
+   ══════════════════════════════════════════
+   Collapses to one column on screens < 900px.
+   .edu-achievement is the amber-bordered highlight box
+   (used for the UKZN award). Only renders if set in data.js.
+   ══════════════════════════════════════════ */
 .edu-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
+  display: grid; grid-template-columns: 1fr 1fr; /* side by side */
   gap: 1.5px; background: var(--border2); border: 1px solid var(--border2);
 }
-.edu-card { background: var(--bg2); padding: 2.2rem 2rem; }
-.edu-year { font-family: var(--ff-mono); font-size: 0.68rem; color: var(--amber); letter-spacing: 0.15em; margin-bottom: 0.6rem; }
+.edu-card   { background: var(--bg2); padding: 2.2rem 2rem; }
+.edu-year   { font-family: var(--ff-mono); font-size: 0.68rem; color: var(--amber); letter-spacing: 0.15em; margin-bottom: 0.6rem; }
 .edu-degree { font-family: var(--ff-display); font-size: 1.05rem; font-weight: 600; color: var(--white); margin-bottom: 0.3rem; }
-.edu-inst { font-family: var(--ff-mono); font-size: 0.8rem; color: var(--teal); margin-bottom: 1rem; }
+.edu-inst   { font-family: var(--ff-mono); font-size: 0.8rem; color: var(--teal); margin-bottom: 1rem; }
 .edu-modules { font-size: 0.82rem; color: var(--muted); line-height: 1.7; }
+
+/* Amber highlight box for awards/achievements */
 .edu-achievement {
   margin-top: 1rem; padding: 0.7rem 0.9rem;
   background: rgba(255,184,0,0.06); border-left: 2px solid var(--amber);
   font-size: 0.82rem; color: var(--text); line-height: 1.7;
 }
 
-/* ── DEVELOPING ── */
+
+/* ══════════════════════════════════════════
+   DEVELOPING — three info cards
+   ══════════════════════════════════════════
+   Same auto-fill grid pattern as projects/skills.
+   Content comes from data.js → DEVELOPING array.
+   ══════════════════════════════════════════ */
 .dev-grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5px; background: var(--border2); border: 1px solid var(--border2);
 }
-.dev-card { background: var(--bg2); padding: 1.8rem 2rem; }
-.dev-card-label { font-family: var(--ff-mono); font-size: 0.62rem; color: var(--teal); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.6rem; }
-.dev-card-title { font-family: var(--ff-display); font-size: 0.95rem; font-weight: 600; color: var(--white); margin-bottom: 0.6rem; }
-.dev-card-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.65; }
+.dev-card        { background: var(--bg2); padding: 1.8rem 2rem; }
+.dev-card-label  { font-family: var(--ff-mono); font-size: 0.62rem; color: var(--teal); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.6rem; }
+.dev-card-title  { font-family: var(--ff-display); font-size: 0.95rem; font-weight: 600; color: var(--white); margin-bottom: 0.6rem; }
+.dev-card-desc   { font-size: 0.83rem; color: var(--muted); line-height: 1.65; }
 
-/* ── FOOTER ── */
+
+/* ══════════════════════════════════════════
+   FOOTER
+   ══════════════════════════════════════════
+   Two columns: name + subtitle on the left, links on the right.
+   flex-wrap: wrap means they stack on very narrow screens.
+   ══════════════════════════════════════════ */
 footer {
   padding: 3rem clamp(1.5rem, 6vw, 5rem);
   display: flex; align-items: center; justify-content: space-between;
   flex-wrap: wrap; gap: 1rem;
 }
 .footer-name { font-family: var(--ff-display); font-size: 1rem; font-weight: 600; color: var(--white); }
-.footer-sub { font-family: var(--ff-mono); font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; letter-spacing: 0.08em; }
+.footer-sub  { font-family: var(--ff-mono); font-size: 0.7rem; color: var(--muted); margin-top: 0.2rem; letter-spacing: 0.08em; }
 .footer-links { display: flex; gap: 1.5rem; }
 .footer-links a {
   font-family: var(--ff-mono); font-size: 0.72rem; color: var(--muted);
@@ -338,31 +528,60 @@ footer {
 }
 .footer-links a:hover { color: var(--amber); }
 
-/* ── SCROLL ANIMATIONS ── */
-.fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+
+/* ══════════════════════════════════════════
+   SCROLL ANIMATIONS
+   ══════════════════════════════════════════
+   Elements with class "fade-up" start invisible and shifted down.
+   main.js adds class "visible" when they scroll into the viewport,
+   which triggers the CSS transition to fade and slide them in.
+   To disable all animations: remove the fade-up class from elements,
+   or set opacity: 1 and transform: none on .fade-up here.
+   ══════════════════════════════════════════ */
+.fade-up         { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-/* ── RESPONSIVE ── */
+
+/* ══════════════════════════════════════════
+   RESPONSIVE — mobile and tablet overrides
+   ══════════════════════════════════════════
+   900px breakpoint: stacks about/education grids to one column.
+   768px breakpoint: full mobile layout.
+     - Hero: stacks to one column (name above stats panel)
+     - Experience: hides the timeline line and dot
+     - Nav: hides links, shows the ☰ hamburger button
+       The mobile menu opens by JS adding class "open" to .nav-links
+   prefers-reduced-motion: disables animation for users who prefer it.
+   ══════════════════════════════════════════ */
 @media (max-width: 900px) {
-  .about-grid { grid-template-columns: 1fr; }
-  .edu-grid   { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; } /* stack about columns */
+  .edu-grid   { grid-template-columns: 1fr; } /* stack education cards */
 }
 
 @media (max-width: 768px) {
+  /* Hero: stack name and stats panel vertically */
   .hero { grid-template-columns: 1fr; }
   .stat-panel { min-width: unset; }
+
+  /* Experience: hide the vertical timeline (doesn't work well on mobile) */
   .exp-item { grid-template-columns: 1fr; }
   .exp-item::before, .exp-dot { display: none; }
+
+  /* Nav: hide links, show hamburger button */
   .nav-links {
-    display: none; flex-direction: column; position: absolute;
+    display: none;                    /* hidden by default on mobile */
+    flex-direction: column;
+    position: absolute;               /* drops below the nav bar */
     top: var(--nav-h); left: 0; right: 0;
-    background: rgba(2,11,24,0.98); padding: 1rem 1.5rem 1.5rem;
+    background: rgba(2,11,24,0.98);
+    padding: 1rem 1.5rem 1.5rem;
     border-bottom: 1px solid var(--border); gap: 1rem;
   }
-  .nav-links.open { display: flex; }
+  .nav-links.open { display: flex; } /* JS adds "open" class when ☰ is clicked */
   .nav-mobile-toggle { display: block; }
 }
 
+/* Respect the user's OS-level "reduce motion" preference */
 @media (prefers-reduced-motion: reduce) {
   .ticker-track { animation: none; }
   .fade-up { opacity: 1; transform: none; transition: none; }
