@@ -292,7 +292,7 @@ nav {
 .hero-photo {
   width: 100%;
   aspect-ratio: 2 / 3;       /* portrait crop */
-  object-fit: cover;
+  object-fit: contain;
   object-position: center top; /* keeps face in frame when cropped */
   display: block;
   filter: grayscale(10%) contrast(1.05); /* subtle treatment to match dark theme */
