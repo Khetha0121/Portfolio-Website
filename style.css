@@ -179,7 +179,7 @@ nav {
   /* push content below fixed nav (56px) + ticker (32px) + extra breathing room (60px) */
   padding: calc(var(--nav-h) + var(--ticker-h) + 60px) clamp(1.5rem, 6vw, 5rem) 80px;
   display: grid;
-  grid-template-columns: 1fr 260px auto; /* text | photo | stats panel */
+  grid-template-columns: 1fr 450px auto; /* text | photo | stats panel */
   align-items: center; gap: 3rem;
   border-bottom: 1px solid var(--border2);
 }
@@ -265,7 +265,7 @@ nav {
    ══════════════════════════════════════════ */
 .hero-photo-wrap {
   position: relative;
-  width: 260px;
+  width: 450px;
   align-self: center;
   flex-shrink: 0;
 }
@@ -291,7 +291,7 @@ nav {
 
 .hero-photo {
   width: 100%;
-  aspect-ratio: 3 / 4;       /* portrait crop */
+  aspect-ratio: 2 / 3;       /* portrait crop */
   object-fit: cover;
   object-position: center top; /* keeps face in frame when cropped */
   display: block;
