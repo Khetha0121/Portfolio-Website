@@ -6,6 +6,7 @@
      Navigation bar ............... NAV section
      Scrolling ticker ............. TICKER section
      Hero (name, bio, stats) ...... HERO section
+     Hero photo ................... HERO PHOTO section
      About & contact box .......... ABOUT section
      Work experience timeline ..... EXPERIENCE section
      Project cards ................ PROJECTS section
@@ -170,14 +171,15 @@ nav {
    The top padding uses calc() to push content below the fixed
    nav + ticker. If you change --nav-h or --ticker-h, the
    spacing adjusts automatically.
-   Layout is a two-column grid: text left, stats panel right.
+   Layout is a three-column grid: text | photo | stats panel.
    On mobile it collapses to one column (see RESPONSIVE).
    ══════════════════════════════════════════ */
 .hero {
   min-height: 100vh;
   /* push content below fixed nav (56px) + ticker (32px) + extra breathing room (60px) */
   padding: calc(var(--nav-h) + var(--ticker-h) + 60px) clamp(1.5rem, 6vw, 5rem) 80px;
-  display: grid; grid-template-columns: 1fr auto; /* text | stats panel */
+  display: grid;
+  grid-template-columns: 1fr 260px auto; /* text | photo | stats panel */
   align-items: center; gap: 3rem;
   border-bottom: 1px solid var(--border2);
 }
@@ -250,6 +252,53 @@ nav {
   transition: background 0.2s, color 0.2s;
 }
 .btn-outline:hover { background: var(--amber); color: var(--bg); }
+
+
+/* ══════════════════════════════════════════
+   HERO PHOTO — profile image in hero centre
+   ══════════════════════════════════════════
+   Double-border offset frame:
+   ::before — amber border, offset top-left
+   ::after  — navy border, offset bottom-right
+   To change the photo width: update 260px here AND in
+   grid-template-columns in .hero above.
+   ══════════════════════════════════════════ */
+.hero-photo-wrap {
+  position: relative;
+  width: 260px;
+  align-self: center;
+  flex-shrink: 0;
+}
+
+/* Amber border — sits behind and to the top-left of the photo */
+.hero-photo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -8px 8px 8px -8px; /* top right bottom left */
+  border: 1px solid var(--amber);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Navy border — sits behind and to the bottom-right of the photo */
+.hero-photo-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 8px -8px -8px 8px; /* top right bottom left */
+  border: 1px solid var(--border);
+  pointer-events: none;
+}
+
+.hero-photo {
+  width: 100%;
+  aspect-ratio: 3 / 4;       /* portrait crop */
+  object-fit: cover;
+  object-position: center top; /* keeps face in frame when cropped */
+  display: block;
+  filter: grayscale(10%) contrast(1.05); /* subtle treatment to match dark theme */
+  position: relative;
+  z-index: 2; /* sits above the pseudo-element borders */
+}
 
 
 /* ══════════════════════════════════════════
@@ -547,7 +596,7 @@ footer {
    ══════════════════════════════════════════
    900px breakpoint: stacks about/education grids to one column.
    768px breakpoint: full mobile layout.
-     - Hero: stacks to one column (name above stats panel)
+     - Hero: stacks to one column (name → photo → stats panel)
      - Experience: hides the timeline line and dot
      - Nav: hides links, shows the ☰ hamburger button
        The mobile menu opens by JS adding class "open" to .nav-links
@@ -559,9 +608,16 @@ footer {
 }
 
 @media (max-width: 768px) {
-  /* Hero: stack name and stats panel vertically */
+  /* Hero: stack text, photo, and stats panel vertically */
   .hero { grid-template-columns: 1fr; }
   .stat-panel { min-width: unset; }
+
+  /* Photo: centre it and constrain width on mobile */
+  .hero-photo-wrap {
+    width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
+  }
 
   /* Experience: hide the vertical timeline (doesn't work well on mobile) */
   .exp-item { grid-template-columns: 1fr; }
