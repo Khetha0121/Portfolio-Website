@@ -81,6 +81,8 @@
     The stats panel on the right is also edited here (not data.js).
   ============================================================ -->
   <section class="hero" id="home">
+
+    <!-- LEFT: text content -->
     <div class="hero-left fade-up">
 
       <!-- Small label above your name — update availability here -->
@@ -118,12 +120,20 @@
       </div>
     </div>
 
-    <!-- ──────────────────────────────────────
-      STATS PANEL (right side of hero)
-      Edit the .stat-val text to change numbers/values.
-      Colour options for .stat-val: amber | white | teal (default)
-    ────────────────────────────────────── -->
-    <div class="stat-panel fade-up" style="--delay:0.15s">
+    <!-- MIDDLE: profile photo
+         Save your image as assets/profile.jpg inside your project folder.
+         Create the assets/ folder if it doesn't exist yet.
+    -->
+    <div class="hero-photo-wrap fade-up" style="--delay:0.1s">
+      <img
+        src="assets/profile.jpg"
+        alt="Khethokuhle Khuzwayo"
+        class="hero-photo"
+      />
+    </div>
+
+    <!-- RIGHT: stats panel -->
+    <div class="stat-panel fade-up" style="--delay:0.2s">
       <div class="stat-row">
         <span class="stat-label">Experience</span>
         <span class="stat-val amber">3 YRS</span>     <!-- ← Update years -->
@@ -150,6 +160,7 @@
       </div>
       <!-- To add a stat: copy a .stat-row div and paste here -->
     </div>
+
   </section>
 
   <!-- ============================================================
