@@ -18,15 +18,6 @@ const TICKER_ITEMS = [
 const EXPERIENCE = [
   {
     year: '2026',
-    date: 'Jul 2026 – Present (upcoming)',
-    role: 'Backend AI Engineering Intern',
-    company: 'FlyRank AI',
-    bullets: [
-      'Joining the backend engineering team to build and integrate AI-powered services and APIs into production systems — directly applying ML engineering and software development skills.',
-    ],
-  },
-  {
-    year: '2026',
     date: 'Jun 2026 – Present',
     role: 'ML Engineering Intern',
     company: 'Data Analyst Lab',
